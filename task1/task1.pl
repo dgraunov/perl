@@ -12,7 +12,7 @@ for my $user ( @users_list ) {
     if ( $user_name eq $user ) { $find = 1 }
  }
 
-if ( $find eq 1 ){
+if ( $find == 1 ){
    print "Добро пожаловать, $user_name!\n"
 }else {
    print "Ты кто такой, $user_name?\n"
