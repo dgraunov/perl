@@ -3,9 +3,9 @@ use warnings;
 use strict;
 
 my @users_list = ( 'dmitry', 'vasya', 'lolik' );
-print "Введите имя пользователя:\n";
-my $user_name = <STDIN>;
-chomp $user_name;
+#my $user_name = $ARGV[0];
+my $user_name = $ENV{user_name};
+my $user_passwd = $ENV{user_passwd};
 my $find = 0;
 
 for my $user ( @users_list ) {
@@ -13,7 +13,7 @@ for my $user ( @users_list ) {
  }
 
 if ( $find == 1 ) {
-   print "Добро пожаловать, $user_name!\n"
+   print "Добро пожаловать, $user_name!\nТвой пароль: $user_passwd\n"
 } else {
    print "Ты кто такой, $user_name?\n"
    }
