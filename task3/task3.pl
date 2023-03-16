@@ -10,12 +10,12 @@ my $user_name = $ENV{user_name};
 my $user_passwd = $ENV{user_passwd};
 my $find;
 
-if ( exists( $users_prms{$user_name}) and $user_passwd eq $users_prms{$user_name}) {
- $find = 1
-} else { $find = 0 }
+if ( exists( $users_prms{$user_name} ) and $user_passwd eq $users_prms{$user_name} ) {
+    $find = 1
+} else { $find = 0 };
 
 if ( $find == 1 ) {
-   print "Добро пожаловать, $user_name!\n"
+    print "Добро пожаловать, $user_name!\n"
 } else {
-   print "Неверный логин или пароль.\n"
+    print "Неверный логин или пароль.\n"
    }
