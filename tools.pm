@@ -1,4 +1,4 @@
-package tools;
+package TOOLS;
 use warnings;
 use strict;
 
@@ -25,6 +25,27 @@ sub read_conf {
     }
     close( $fh );
     return %hash;
+}
+
+sub reg_user {
+    my ( $user_name, $user_passwd ) = @_;
+    my %users_prms = read_conf();
+    if ( exists( $users_prms{$user_name}) ) {       
+        return -1;
+    } else {
+        $users_prms{$user_name} = $user_passwd;
+        my $reg_new_user = rewrite_config( $user_name, $user_passwd );
+        return 0;
+    }
+}
+
+sub rewrite_config {
+    my ( $user_name, $user_passwd ) = @_;
+    open( my $fh, '>>', $conf_path) or die "Не удалось открыть файл '$conf_path' $!";
+    print $fh "\n";
+    print $fh "$user_name=$user_passwd";
+    close $fh;
+    return 0;
 }
 
 1;
