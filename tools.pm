@@ -48,4 +48,35 @@ sub rewrite_config {
     return 0;
 }
 
+sub check_user_name {
+    my ($user_name) = shift;
+    if ( $user_name =~ m/^[a-zA-Z][a-zA-Z0-9_-]+[a-zA-Z0-9]$/) {
+        return 0;
+    } else {
+        return (-1);
+    }
+}
+
+sub check_user_passwd {
+    my $user_passwd = shift;
+    if ( length($user_passwd) < 8 ) {
+        print "Пароль должен содержать минимум 8 символов\n";
+        print ("length($user_passwd)\n");
+    }
+    elsif ( $user_passwd !~ m/^[a-zA-z]/ ) {
+        print "Пароль должен начинаться с латинской буквы\n";
+    }
+    elsif ( $user_passwd !~ m/[!@#\$%^&*()]/) {
+        print "Пароль должен содержать хотя бы 1 спецсимвол\n";
+    }
+    elsif ( $user_passwd !~ m/[A-Z]/ ) {
+        print "Пароль должен содержать хотя бы 1 заглавную букву\n";
+    }
+    elsif ( $user_passwd !~ m/[0-9]/ ) {
+        print "Пароль должен содеражть хотя бы 1 цифру\n";
+    } else {
+        return 0;
+    }
+}
+
 1;
