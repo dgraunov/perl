@@ -34,16 +34,17 @@ sub reg_user {
         return -1;
     } else {
         $users_prms{$user_name} = $user_passwd;
-        my $reg_new_user = rewrite_config( $user_name, $user_passwd );
+        my $reg_new_user = rewrite_config( \%users_prms, $conf_path );
         return 0;
     }
 }
 
 sub rewrite_config {
-    my ( $user_name, $user_passwd ) = @_;
-    open( my $fh, '>>', $conf_path) or die "Не удалось открыть файл '$conf_path' $!";
-    print $fh "\n";
-    print $fh "$user_name=$user_passwd";
+    my ($hash, $filename) = @_;
+    open( my $fh, '>', $filename) or die "Не удалось открыть файл '$filename' $!";
+    while ( my($key, $value ) = each %$hash) {
+    print $fh "$key=$value\n";
+    }
     close $fh;
     return 0;
 }
@@ -53,7 +54,7 @@ sub check_user_name {
     if ( $user_name =~ m/^[a-zA-Z][a-zA-Z0-9_-]+[a-zA-Z0-9]$/) {
         return 0;
     } else {
-        return (-1);
+        return -1;
     }
 }
 
@@ -61,21 +62,37 @@ sub check_user_passwd {
     my $user_passwd = shift;
     if ( length($user_passwd) < 8 ) {
         print "Пароль должен содержать минимум 8 символов\n";
-        print ("length($user_passwd)\n");
+        return exit;
     }
     elsif ( $user_passwd !~ m/^[a-zA-z]/ ) {
         print "Пароль должен начинаться с латинской буквы\n";
+        return exit
     }
     elsif ( $user_passwd !~ m/[!@#\$%^&*()]/) {
         print "Пароль должен содержать хотя бы 1 спецсимвол\n";
+        return exit
     }
     elsif ( $user_passwd !~ m/[A-Z]/ ) {
         print "Пароль должен содержать хотя бы 1 заглавную букву\n";
+        return exit
     }
     elsif ( $user_passwd !~ m/[0-9]/ ) {
         print "Пароль должен содеражть хотя бы 1 цифру\n";
+        return exit
     } else {
         return 0;
+    }
+}
+
+sub del_user {
+    my ( $user_name ) = @_;
+    my %users_prms = read_conf();
+    if ( exists($users_prms{$user_name}) ) {
+        delete $users_prms{$user_name};
+        my $res_del_user = rewrite_config(\%users_prms, $conf_path);
+        return 0;
+    } else {
+        return -1;
     }
 }
 
