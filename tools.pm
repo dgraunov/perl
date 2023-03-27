@@ -34,15 +34,15 @@ sub reg_user {
         return -1;
     } else {
         $users_prms{$user_name} = $user_passwd;
-        my $reg_new_user = rewrite_config( \%users_prms, $conf_path );
+        my $reg_new_user = rewrite_config( $conf_path, %users_prms );
         return 0;
     }
 }
 
 sub rewrite_config {
-    my ($hash, $filename) = @_;
+    my ( $filename, %hash ) = @_;
     open( my $fh, '>', $filename) or die "Не удалось открыть файл '$filename' $!";
-    while ( my($key, $value ) = each %$hash) {
+    while ( my($key, $value ) = each %hash) {
     print $fh "$key=$value\n";
     }
     close $fh;
@@ -50,7 +50,7 @@ sub rewrite_config {
 }
 
 sub check_user_name {
-    my ($user_name) = shift;
+    my ($user_name) = @_;
     if ( $user_name =~ m/^[a-zA-Z][a-zA-Z0-9_-]+[a-zA-Z0-9]$/) {
         return 0;
     } else {
@@ -59,7 +59,7 @@ sub check_user_name {
 }
 
 sub check_user_passwd {
-    my $user_passwd = shift;
+    my ($user_passwd) = @_;
     if ( length($user_passwd) < 8 ) {
         print "Пароль должен содержать минимум 8 символов\n";
         return exit;
@@ -89,7 +89,7 @@ sub del_user {
     my %users_prms = read_conf();
     if ( exists($users_prms{$user_name}) ) {
         delete $users_prms{$user_name};
-        my $res_del_user = rewrite_config(\%users_prms, $conf_path);
+        my $res_del_user = rewrite_config( $conf_path, %users_prms );
         return 0;
     } else {
         return -1;
