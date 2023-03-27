@@ -96,4 +96,22 @@ sub del_user {
     }
 }
 
+sub change_passwd {
+    my ( $user_name, $user_passwd ) = @_;
+    my $result_check_new_passwd = check_user_passwd($user_passwd);
+    my %users_prms = read_conf();
+    if ( exists( $users_prms{$user_name}) and $result_check_new_passwd == 0 ) {
+        $users_prms{$user_name} = $user_passwd;
+        my $res_change_passwd = rewrite_config($conf_path, %users_prms);
+        return 0;
+    }
+    elsif ( $result_check_new_passwd != 0 ) {
+        print $result_check_new_passwd;
+        return -1;
+    }
+    else {
+        return -2;
+    }
+}
+
 1;
