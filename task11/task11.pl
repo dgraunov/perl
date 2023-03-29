@@ -4,6 +4,7 @@ use strict;
 use Data::Dumper;
 use lib '/mnt/c/perl';
 use TOOLS;
+use db;
 
 my $user_name = $ENV{user_name};
 my $user_passwd = $ENV{user_passwd};
@@ -11,11 +12,6 @@ my $action = $ENV{action};
 
 if ( $user_name eq '' ) {
     print "Не указано имя пользователя\n";
-    exit;
-}
-
-if ($user_passwd eq '' ) {
-    print "Не указан пароль\n";
     exit;
 }
 
@@ -69,3 +65,5 @@ elsif ( $action eq 'change_passwd') {
     print "Выбери reg, log, del или change_passwd!\n";
     exit;
 }
+    
+    
